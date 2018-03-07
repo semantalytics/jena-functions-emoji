@@ -8,7 +8,7 @@ Namespace: http://semantalytics.com/2017/09/ns/stardog/kibble/string/emoji/
 
 Suggested prefixes: e:, emj:, emoji:
 
-   aliases
+    aliases
     count
     decimalHtml
     decimalHtmlShort
