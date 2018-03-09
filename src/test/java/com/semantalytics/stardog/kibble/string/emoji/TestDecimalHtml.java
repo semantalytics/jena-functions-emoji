@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class TestDecimalHtml extends AbstractStardogTest {
 
     @Test
-    public void testEmoji() {
+    public void testOneArg() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
                     "select ?result where { bind(emoji:decimalHtml(\"dog\") as ?result) }";
@@ -24,6 +24,40 @@ public class TestDecimalHtml extends AbstractStardogTest {
                 assertEquals("&#128054", aValue);
                 assertFalse("Should have no more results", aResult.hasNext());
             }
+    }
+
+    @Test
+    public void testNoneEmojiString() {
+
+        final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
+                "select ?result where { bind(emoji:decimalHtml(\"notemoji\") as ?result) }";
+
+        try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
+
+            assertTrue("Should have a result", aResult.hasNext());
+
+            final String aValue = aResult.next().getValue("result").stringValue();
+
+            assertEquals("", aValue);
+            assertFalse("Should have no more results", aResult.hasNext());
+        }
+    }
+
+    @Test
+    public void testEmptyString() {
+
+        final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
+                "select ?result where { bind(emoji:decimalHtml(\"dog\") as ?result) }";
+
+        try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
+
+            assertTrue("Should have a result", aResult.hasNext());
+
+            final String aValue = aResult.next().getValue("result").stringValue();
+
+            assertEquals("", aValue);
+            assertFalse("Should have no more results", aResult.hasNext());
+        }
     }
 
     @Test

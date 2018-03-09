@@ -10,7 +10,7 @@ public enum EmojiVocabulary {
     decimalHtml,
     decimalHtmlShort,
     decimalSurrogateHtml,
-    emoji,
+    unicode,
     emojify,
     emoticon,
     hexHtmlify,

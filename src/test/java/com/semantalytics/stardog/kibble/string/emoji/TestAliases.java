@@ -16,7 +16,7 @@ public class TestAliases extends AbstractStardogTest {
     public void testOneArg() {
 
             final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
-                    "select ?result where { bind(emoji:aliases(\"dog\") as ?result) }";
+                    "select ?result where { bind(emoji:aliases(\":octagonal_sign:\") as ?result) }";
 
             try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
 
@@ -25,9 +25,27 @@ public class TestAliases extends AbstractStardogTest {
                 final String aValue = aResult.next().getValue("result").stringValue();
                 System.out.println("'" + aValue + "'");
 
-                assertEquals("puppy", aValue);
+                assertEquals("stop_sign, octagonal_sign", aValue);
                 assertFalse("Should have no more results", aResult.hasNext());
             }
+    }
+
+    @Test
+    public void testEmptyString() {
+
+        final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
+                "select ?result where { bind(emoji:aliases(\"\") as ?result) }";
+
+        try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
+
+            assertTrue("Should have a result", aResult.hasNext());
+
+            final String aValue = aResult.next().getValue("result").stringValue();
+            System.out.println("'" + aValue + "'");
+
+            assertEquals("", aValue);
+            assertFalse("Should have no more results", aResult.hasNext());
+        }
     }
 
     @Test

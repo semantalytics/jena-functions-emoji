@@ -4,19 +4,19 @@ import com.complexible.stardog.plan.filter.ExpressionEvaluationException;
 import com.complexible.stardog.plan.filter.ExpressionVisitor;
 import com.complexible.stardog.plan.filter.functions.AbstractFunction;
 import com.complexible.stardog.plan.filter.functions.string.StringFunction;
-import emoji4j.EmojiUtils;
 import org.openrdf.model.Value;
 
 import static com.complexible.common.rdf.model.Values.literal;
+import static emoji4j.EmojiUtils.getEmoji;
 
-public final class Emoji extends AbstractFunction implements StringFunction {
+public final class Unicode extends AbstractFunction implements StringFunction {
 
-    protected Emoji() {
-        super(1, EmojiVocabulary.emoji.stringValue());
+    protected Unicode() {
+        super(1, EmojiVocabulary.unicode.stringValue());
     }
 
-    private Emoji(final Emoji emoji) {
-        super(emoji);
+    private Unicode(final Unicode unicode) {
+        super(unicode);
     }
 
     @Override
@@ -24,12 +24,12 @@ public final class Emoji extends AbstractFunction implements StringFunction {
 
         final String string = assertStringLiteral(values[0]).stringValue();
 
-        return literal(EmojiUtils.getEmoji(string).getEmoji());
+        return literal(getEmoji(string).getEmoji());
     }
 
     @Override
-    public Emoji copy() {
-        return new Emoji(this);
+    public Unicode copy() {
+        return new Unicode(this);
     }
 
     @Override
@@ -39,6 +39,6 @@ public final class Emoji extends AbstractFunction implements StringFunction {
 
     @Override
     public String toString() {
-        return EmojiVocabulary.emoji.name();
+        return EmojiVocabulary.unicode.name();
     }
 }

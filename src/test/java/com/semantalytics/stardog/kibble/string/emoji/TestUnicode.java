@@ -7,13 +7,14 @@ import org.openrdf.query.TupleQueryResult;
 
 import static org.junit.Assert.*;
 
-public class TestCount extends AbstractStardogTest {
+
+public class TestUnicode extends AbstractStardogTest {
 
     @Test
-    public void testNoEmojis() {
+    public void testShortName() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
-                    "select ?result where { bind(emoji:count(\"\") as ?result) }";
+                    "select ?result where { bind(emoji:unicode(\"dog\") as ?result) }";
 
             try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
 
@@ -21,16 +22,17 @@ public class TestCount extends AbstractStardogTest {
 
                 final String aValue = aResult.next().getValue("result").stringValue();
 
-                assertEquals("0", aValue);
+                assertEquals("dog", aValue);
+
                 assertFalse("Should have no more results", aResult.hasNext());
             }
     }
 
     @Test
-    public void testOneEmoji() {
+    public void testEmptyString() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
-                "select ?result where { bind(emoji:count(\":star:\") as ?result) }";
+                "select ?result where { bind(emoji:unicode(\"\") as ?result) }";
 
         try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
 
@@ -38,24 +40,24 @@ public class TestCount extends AbstractStardogTest {
 
             final String aValue = aResult.next().getValue("result").stringValue();
 
-            assertEquals("1", aValue);
+            assertEquals("", aValue);
             assertFalse("Should have no more results", aResult.hasNext());
         }
     }
 
     @Test
-    public void testTwoEmoji() {
+    public void testTooFew() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
-                "select ?result where { bind(emoji:count(\":star: :dog:\") as ?result) }";
+                "select ?result where { bind(emoji:unicode() as ?result) }";
 
-        try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
+        try(final TupleQueryResult aResult = connection.select(aQuery).execute()) {
 
             assertTrue("Should have a result", aResult.hasNext());
 
-            final String aValue = aResult.next().getValue("result").stringValue();
+            final BindingSet aBindingSet = aResult.next();
 
-            assertEquals("2", aValue);
+            assertTrue("Should have no bindings", aBindingSet.getBindingNames().isEmpty());
             assertFalse("Should have no more results", aResult.hasNext());
         }
     }
@@ -64,7 +66,7 @@ public class TestCount extends AbstractStardogTest {
     public void testTooManyArgs() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
-                "select ?result where { bind(emoji:count(\"star\", \"dog\") as ?result) }";
+                "select ?result where { bind(emoji:unicode(\"star\", \"dog\") as ?result) }";
 
         try(final TupleQueryResult aResult = connection.select(aQuery).execute()) {
 
@@ -78,27 +80,10 @@ public class TestCount extends AbstractStardogTest {
     }
 
     @Test
-    public void testTooFewArgs() {
+    public void testWrongTypeFirstArg() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
-                "select ?result where { bind(emoji:count() as ?result) }";
-
-        try(final TupleQueryResult aResult = connection.select(aQuery).execute()) {
-
-            assertTrue("Should have a result", aResult.hasNext());
-
-            final BindingSet aBindingSet = aResult.next();
-
-            assertTrue("Should have no bindings", aBindingSet.getBindingNames().isEmpty());
-            assertFalse("Should have no more results", aResult.hasNext());
-        }
-    }
-
-    @Test
-    public void testWrongTypeFistArg() {
-
-        final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
-                "select ?result where { bind(emoji:count(1) as ?result) }";
+                "select ?result where { bind(emoji:unicode(1) as ?result) }";
 
         try(final TupleQueryResult aResult = connection.select(aQuery).execute()) {
 
