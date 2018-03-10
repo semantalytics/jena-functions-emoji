@@ -21,13 +21,13 @@ public class TestDecimalHtml extends AbstractStardogTest {
 
                 final String aValue = aResult.next().getValue("result").stringValue();
 
-                assertEquals("&#128054", aValue);
+                assertEquals("&#128054;", aValue);
                 assertFalse("Should have no more results", aResult.hasNext());
             }
     }
 
     @Test
-    public void testNoneEmojiString() {
+    public void testNotEmojiString() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
                 "select ?result where { bind(emoji:decimalHtml(\"notemoji\") as ?result) }";
@@ -47,7 +47,7 @@ public class TestDecimalHtml extends AbstractStardogTest {
     public void testEmptyString() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
-                "select ?result where { bind(emoji:decimalHtml(\"dog\") as ?result) }";
+                "select ?result where { bind(emoji:decimalHtml(\"\") as ?result) }";
 
         try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
 

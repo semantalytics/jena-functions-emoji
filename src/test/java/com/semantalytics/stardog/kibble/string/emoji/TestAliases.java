@@ -13,19 +13,18 @@ import static org.junit.Assert.assertTrue;
 public class TestAliases extends AbstractStardogTest {
 
     @Test
-    public void testOneArg() {
+    public void testOneArgEmoji() {
 
             final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
-                    "select ?result where { bind(emoji:aliases(\":octagonal_sign:\") as ?result) }";
+                    "select ?result where { bind(emoji:aliases(\"\uD83D\uDC2D\") as ?result) }";
 
             try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
 
                 assertTrue("Should have a result", aResult.hasNext());
 
                 final String aValue = aResult.next().getValue("result").stringValue();
-                System.out.println("'" + aValue + "'");
 
-                assertEquals("stop_sign, octagonal_sign", aValue);
+                assertEquals("mouse", aValue);
                 assertFalse("Should have no more results", aResult.hasNext());
             }
     }
@@ -49,7 +48,7 @@ public class TestAliases extends AbstractStardogTest {
     }
 
     @Test
-    public void testTooFew() {
+    public void testTooFewArgs() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
                 "select ?result where { bind(emoji:aliases() as ?result) }";

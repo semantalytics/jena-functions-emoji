@@ -13,7 +13,6 @@ Suggested prefixes: e:, emj:, emoji:
     decimalHtml
     decimalHtmlShort
     decimalSurrogateHtml
-    emoji
     emojify
     emoticon
     hexHtmlify
@@ -21,3 +20,4 @@ Suggested prefixes: e:, emj:, emoji:
     isEmoji
     remove
     shortCodify
+    unicode

@@ -4,10 +4,16 @@ import com.complexible.stardog.plan.filter.ExpressionEvaluationException;
 import com.complexible.stardog.plan.filter.ExpressionVisitor;
 import com.complexible.stardog.plan.filter.functions.AbstractFunction;
 import com.complexible.stardog.plan.filter.functions.string.StringFunction;
+import emoji4j.Emoji;
 import emoji4j.EmojiUtils;
 import org.openrdf.model.Value;
 
+import java.util.Collections;
+import java.util.Optional;
+
 import static com.complexible.common.rdf.model.Values.literal;
+import static emoji4j.EmojiUtils.*;
+import static java.util.Collections.*;
 
 public final class Emoticon extends AbstractFunction implements StringFunction {
 
@@ -24,7 +30,7 @@ public final class Emoticon extends AbstractFunction implements StringFunction {
 
         final String string = assertStringLiteral(values[0]).stringValue();
 
-        return literal(String.join(",", EmojiUtils.getEmoji(string).getEmoticons()));
+        return literal(String.join("\u001f", Optional.ofNullable(getEmoji(string)).map(Emoji::getEmoticons).orElse(emptyList())));
     }
 
     @Override

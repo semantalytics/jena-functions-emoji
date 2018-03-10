@@ -4,10 +4,14 @@ import com.complexible.stardog.plan.filter.ExpressionEvaluationException;
 import com.complexible.stardog.plan.filter.ExpressionVisitor;
 import com.complexible.stardog.plan.filter.functions.AbstractFunction;
 import com.complexible.stardog.plan.filter.functions.string.StringFunction;
+import emoji4j.Emoji;
 import emoji4j.EmojiUtils;
 import org.openrdf.model.Value;
 
+import java.util.Optional;
+
 import static com.complexible.common.rdf.model.Values.literal;
+import static emoji4j.EmojiUtils.*;
 
 public final class DecimalHtml extends AbstractFunction implements StringFunction {
 
@@ -24,7 +28,7 @@ public final class DecimalHtml extends AbstractFunction implements StringFunctio
 
         final String string = assertStringLiteral(values[0]).stringValue();
 
-        return literal(EmojiUtils.getEmoji(string).getDecimalHtml());
+        return literal(Optional.ofNullable(getEmoji(string)).map(Emoji::getDecimalHtml).orElse(""));
     }
 
     @Override

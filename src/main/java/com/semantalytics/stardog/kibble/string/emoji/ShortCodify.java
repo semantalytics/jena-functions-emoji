@@ -8,6 +8,7 @@ import emoji4j.EmojiUtils;
 import org.openrdf.model.Value;
 
 import static com.complexible.common.rdf.model.Values.literal;
+import static emoji4j.EmojiUtils.*;
 
 public final class ShortCodify extends AbstractFunction implements StringFunction {
 
@@ -24,7 +25,7 @@ public final class ShortCodify extends AbstractFunction implements StringFunctio
 
         final String string = assertStringLiteral(values[0]).stringValue();
 
-        return literal(EmojiUtils.shortCodify(string));
+        return literal(shortCodify(string));
     }
 
     @Override

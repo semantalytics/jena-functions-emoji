@@ -13,6 +13,9 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static com.complexible.common.rdf.model.Values.literal;
+import static emoji4j.EmojiUtils.*;
+import static java.lang.String.*;
+import static java.util.Collections.*;
 
 public final class Aliases extends AbstractFunction implements StringFunction {
 
@@ -29,9 +32,7 @@ public final class Aliases extends AbstractFunction implements StringFunction {
 
         final String string = assertStringLiteral(values[0]).stringValue();
 
-        return literal(String.join(",", Optional.ofNullable(EmojiUtils.getEmoji(string)).map(Emoji::getAliases).orElse(Collections.emptyList())));
-
-        //return literal(String.join(",", EmojiUtils.getEmoji(string).getAliases()));
+        return literal(join("\u001f", Optional.ofNullable(getEmoji(string)).map(Emoji::getAliases).orElse(emptyList())));
     }
 
     @Override

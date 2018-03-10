@@ -14,7 +14,7 @@ public class TestRemove extends AbstractStardogTest {
     public void testOneArg() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
-                    "select ?result where { bind(emoji:remove(\":star: :dog: union\") as ?result) }";
+                    "select ?result where { bind(emoji:remove(\"A \uD83D\uDC31, \uD83D\uDC31 and a \uD83D\uDC2D became friends❤️. For \uD83D\uDC36's birthday party, they all had \uD83C\uDF54s, \uD83C\uDF5Fs, \uD83C\uDF6As and \uD83C\uDF70.\") as ?result) }";
 
             try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
 
@@ -22,9 +22,7 @@ public class TestRemove extends AbstractStardogTest {
 
                 final String aValue = aResult.next().getValue("result").stringValue();
 
-                System.out.println("'" + aValue + "'");
-                assertEquals("union", aValue);
-
+                assertEquals("A ,  and a  became friends. For 's birthday party, they all had s, s, s and .", aValue);
                 assertFalse("Should have no more results", aResult.hasNext());
             }
     }

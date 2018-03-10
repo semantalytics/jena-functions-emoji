@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class TestUnicode extends AbstractStardogTest {
 
     @Test
-    public void testShortName() {
+    public void testOneArgWithEmoji() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
                     "select ?result where { bind(emoji:unicode(\"dog\") as ?result) }";
@@ -22,10 +22,28 @@ public class TestUnicode extends AbstractStardogTest {
 
                 final String aValue = aResult.next().getValue("result").stringValue();
 
-                assertEquals("dog", aValue);
+                assertEquals("\uD83D\uDC36", aValue);
 
                 assertFalse("Should have no more results", aResult.hasNext());
             }
+    }
+
+    @Test
+    public void testOneArgWithNotEmoji() {
+
+        final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
+                "select ?result where { bind(emoji:unicode(\"dalmation\") as ?result) }";
+
+        try (final TupleQueryResult aResult = connection.select(aQuery).execute()) {
+
+            assertTrue("Should have a result", aResult.hasNext());
+
+            final String aValue = aResult.next().getValue("result").stringValue();
+
+            assertEquals("", aValue);
+
+            assertFalse("Should have no more results", aResult.hasNext());
+        }
     }
 
     @Test
@@ -46,7 +64,7 @@ public class TestUnicode extends AbstractStardogTest {
     }
 
     @Test
-    public void testTooFew() {
+    public void testTooFewArgs() {
 
         final String aQuery = EmojiVocabulary.sparqlPrefix("emoji") +
                 "select ?result where { bind(emoji:unicode() as ?result) }";
