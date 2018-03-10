@@ -149,7 +149,7 @@
                 <version>2.12.4</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/*</exclude>
+                        <exclude>**/Test*</exclude>
                     </excludes>
                     <includes>
                         <include>**/EmojiTestSuite.java</include>
